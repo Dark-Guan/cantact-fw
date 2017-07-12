@@ -14,7 +14,7 @@
 
 #define LED_DURATION 50
 
-void led_init();
+void led_init(void);
 void led_blue_blink(uint8_t numblinks);
 void led_green_on(void);
 void led_green_off(void);

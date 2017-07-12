@@ -31,4 +31,6 @@ void can_preptx(CanTxMsgTypeDef *tx_msg);
 uint8_t is_can_msg_pending(uint8_t fifo);
 CAN_HandleTypeDef* can_gethandle(void);
 
+extern uint32_t can_msg_receive;
+
 #endif // _CAN_H

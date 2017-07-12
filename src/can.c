@@ -20,7 +20,7 @@ static volatile uint8_t process_tx = 0;
 static CanRxMsgTypeDef can_rx_msg;
 static CanTxMsgTypeDef can_tx_msg;
 
-
+uint32_t can_msg_receive = 0;
 // Initialize CAN peripheral settings, but don't actually start the peripheral
 void can_init(void)
 {
@@ -235,11 +235,26 @@ void can_preptx(CanTxMsgTypeDef *msg)
     process_tx = 1;
 }
 
+/**
+* @brief This function handles HDMI-CEC and CAN global interrupts / HDMI-CEC wake-up interrupt through EXTI line 27.
+*/
+void CEC_CAN_IRQHandler(void)
+{
+  /* USER CODE BEGIN CEC_CAN_IRQn 0 */
+
+  /* USER CODE END CEC_CAN_IRQn 0 */
+  HAL_CAN_IRQHandler(&can_handle);
+  /* USER CODE BEGIN CEC_CAN_IRQn 1 */
+
+  /* USER CODE END CEC_CAN_IRQn 1 */
+}
+
 // CAN rxcomplete callback TODO: Move to interrupts?
 void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef* hcan)
 {
 	led_blue_on();
-    process_recv = 1;
+	can_msg_receive++;
+  process_recv = 1;
 	uint32_t res = HAL_CAN_Receive_IT(hcan, CAN_FIFO0);
 
     if(res != HAL_OK)
